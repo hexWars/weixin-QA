@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bnuz.edu.cn.emp.mapper.EmpMapper">
+
+    <resultMap id="empMap" type="bnuz.edu.cn.emp.entity.Emp">
+        <id column="emp_id" property="empId"/>
+        <id column="name" property="name"/>
+        <id column="sex" property="sex"/>
+        <id column="sal" property="sal"/>
+        <id column="age" property="age"/>
+        <id column="birthday" property="birthday"/>
+        <id column="address" property="address"/>
+        <id column="dept_id" property="deptId"/>
+        <association property="dept" column="dept_id" javaType="bnuz.edu.cn.emp.entity.Dept">
+            <id column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+        </association>
+    </resultMap>
+
+    <select id="getEmpList" resultMap="empMap" parameterType="bnuz.edu.cn.emp.vo.EmpQuery">
+        select * from emp as a left join dept as b on a.dept_id = b.dept_id
+        <include refid="getEmpListWhere"></include>
+        order by emp_id asc
+        limit #{start},#{limit}
+    </select>
+    <select id="countEmpList" resultType="long" parameterType="bnuz.edu.cn.emp.vo.EmpQuery">
+        select count(1) from emp as a
+        <include refid="getEmpListWhere"></include>
+    </select>
+
+    <insert id="addEmp" parameterType="bnuz.edu.cn.emp.entity.Emp">
+        insert into emp (name, sex, age, sal, birthday, address, dept_id)
+            value (#{name},#{sex},#{age},#{sal},#{birthday},#{address},#{deptId})
+    </insert>
+
+    <sql id="getEmpListWhere">
+        <where>
+            <if test="name != null">
+                a.name like '%' #{name} '%'
+            </if>
+            <if test="startDate != null">
+                <![CDATA[
+                    and a.birthday >= #{startDate}
+                ]]>
+            </if>
+            <if test="endDate != null">
+                <![CDATA[
+                    and a.birthday <= #{endDate}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <delete id="deleteEmpByIds" parameterType="string">
+        delete
+        from emp
+        where emp_id in (${ids});
+    </delete>
+
+    <select id="getEmpById" parameterType="integer" resultType="bnuz.edu.cn.emp.entity.Emp">
+        select *
+        from emp
+        where emp_id = #{Id};
+    </select>
+
+    <update id="updateEmp" parameterType="bnuz.edu.cn.emp.entity.Emp">
+        update emp
+        set name     = #{name},
+            sex      = #{sex},
+            sal      = #{sal},
+            age      = #{age},
+            birthday = #{birthday},
+            address  = #{address}
+        where emp_id = #{empId}
+    </update>
+</mapper>

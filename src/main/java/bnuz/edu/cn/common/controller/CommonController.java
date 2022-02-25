@@ -1,5 +1,6 @@
 package bnuz.edu.cn.common.controller;
 
+
 import com.ramostear.captcha.HappyCaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,10 +26,26 @@ public class CommonController {
         return "login";
     }
 
+    @GetMapping("/index")
+    @ApiOperation("首页")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("/welcome")
+    @ApiOperation("欢迎页")
+    public String welcome() {
+        return "welcome";
+    }
+
     @GetMapping("/captcha")
     @ApiOperation("验证码")
     public void happyCaptcha(HttpServletRequest request, HttpServletResponse response){
         HappyCaptcha.require(request,response).build().finish();
     }
+
+    @GetMapping("/setting")
+    @ApiOperation("设置")
+    public String setting(){ return "setting";}
 
 }

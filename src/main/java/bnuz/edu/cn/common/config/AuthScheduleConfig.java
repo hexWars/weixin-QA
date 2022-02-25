@@ -32,10 +32,10 @@ public class AuthScheduleConfig {
      * 每隔 fixedDelay/1000 秒定时刷新
      * 6000000 为100分钟,时限为120分钟
      */
-    @Scheduled(fixedDelay = 6000000)
-    private void configureTasks() {
-        AccessTokenVO token = TokenUtil.getAccessToken(tokenVO);
-        accessToken = token.getAccess_token();
-        log.info("令牌为: " + accessToken + "  执行定时任务: " + LocalDateTime.now());
-    }
+//    @Scheduled(fixedDelay = 6000000)
+//    private void configureTasks() {
+//        AccessTokenVO token = TokenUtil.getAccessToken(tokenVO);
+//        accessToken = token.getAccess_token();
+//        log.info("令牌为: " + accessToken + "  执行定时任务: " + LocalDateTime.now());
+//    }
 }
